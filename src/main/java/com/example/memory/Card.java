@@ -1,0 +1,89 @@
+package com.example.memory;
+
+import javafx.scene.image.Image;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Card {
+    //Seme
+    private String suit;
+    //Nome della faccia
+    private String faceName;
+
+    public Card(String suit, String faceName) {
+        setSuit(suit);
+        setFaceName(faceName);
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    //Lista dei semi validi
+    public static List<String> getValidSuits()
+    {
+        return Arrays.asList("hearts","diamonds","clubs","spades");
+    }
+
+    //Valida e imposta il seme della carta, se non valido lancia un'eccezione
+    public void setSuit(String suit) {
+        suit = suit.toLowerCase();
+        if (getValidSuits().contains(suit))
+            this.suit = suit;
+        else
+            throw new IllegalArgumentException(suit + " invalid, must be one of "+getValidSuits());
+    }
+
+    public String getFaceName() {
+        return faceName;
+    }
+
+    //Lista delle facce valide
+    public static List<String> getValidFaceNames()
+    {
+        return Arrays.asList("2","3","4","5","6","7","8","9","10","jack","queen","king","ace");
+    }
+
+    //Valida e setta la faccia, altrimenti lancia un'eccezione
+    public void setFaceName(String faceName) {
+        faceName = faceName.toLowerCase();
+        if (getValidFaceNames().contains(faceName))
+            this.faceName = faceName;
+        else
+            throw new IllegalArgumentException(faceName + " is invalid, must be one of "+getFaceName());
+    }
+
+    public String toString()
+    {
+        return faceName + " of " + suit;
+    }
+
+    //Restituisce il colore della carta
+    public String getColour()
+    {
+        if (suit.equals("hearts") || suit.equals("diamonds"))
+            return "red";
+        else
+            return "black";
+    }
+
+   //Ritorna il valore corrispondente alla carta in base alla posizione della lista (minimo valore 2)
+    public int getValue()
+    {
+        return getValidFaceNames().indexOf(faceName) + 2;
+    }
+
+    //Ritorna l'immagine corrispondente alla carta usando un path basato su seme e nome della faccia
+    public Image getImage()
+    {
+        String pathName = "images/"+faceName+"_of_"+suit+".png";
+        return new Image(Card.class.getResourceAsStream(pathName));
+    }
+
+    //Ritorna l'immagine del retro della carta
+    public Image getBackOfCardImage()
+    {
+        return new Image(Card.class.getResourceAsStream("images/back_of_card.png"));
+    }
+}
